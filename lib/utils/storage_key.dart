@@ -247,7 +247,12 @@ abstract final class LocalCacheKey {
       danmakuFilterRules = 'danmakuFilterRules',
       mixinKey = 'mixinKey',
       timeStamp = 'timeStamp',
-      buvid = 'buvid';
+      buvid = 'buvid',
+      biliFpLocal = 'biliFpLocal',
+      biliTicketFts = 'biliTicketFts',
+      biliTicket = 'biliTicket',
+      biliTicketExpire = 'biliTicketExpire',
+      biliTicketMid = 'biliTicketMid';
 }
 
 abstract final class VideoBoxKey {

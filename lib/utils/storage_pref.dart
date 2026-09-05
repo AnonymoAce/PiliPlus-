@@ -935,6 +935,42 @@ abstract final class Pref {
     return buvid;
   }
 
+  static String get biliFpLocal {
+    String? fpLocal = _localCache.get(LocalCacheKey.biliFpLocal);
+    if (fpLocal == null) {
+      fpLocal =
+          List.generate(64, (_) => Utils.random.nextInt(16).toRadixString(16))
+              .join() +
+          'ffff' +
+          DateTime.now().millisecondsSinceEpoch.toString();
+      _localCache.put(LocalCacheKey.biliFpLocal, fpLocal);
+    }
+    return fpLocal;
+  }
+
+  static int get biliTicketFts {
+    int? fts = _localCache.get(LocalCacheKey.biliTicketFts);
+    if (fts == null) {
+      fts = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+      _localCache.put(LocalCacheKey.biliTicketFts, fts);
+    }
+    return fts;
+  }
+
+  static String? get biliTicket => _localCache.get(LocalCacheKey.biliTicket);
+
+  static int? get biliTicketExpire =>
+      _localCache.get(LocalCacheKey.biliTicketExpire);
+
+  static String? get biliTicketMid =>
+      _localCache.get(LocalCacheKey.biliTicketMid);
+
+  static void saveBiliTicket(String ticket, int expireAt, String mid) {
+    _localCache.put(LocalCacheKey.biliTicket, ticket);
+    _localCache.put(LocalCacheKey.biliTicketExpire, expireAt);
+    _localCache.put(LocalCacheKey.biliTicketMid, mid);
+  }
+
   static bool get showMemberShop =>
       _setting.get(SettingBoxKey.showMemberShop, defaultValue: false);
 

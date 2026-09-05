@@ -7,7 +7,9 @@ import 'package:PiliPlus/grpc/bilibili/metadata/fawkes.pb.dart';
 import 'package:PiliPlus/grpc/bilibili/metadata/locale.pb.dart';
 import 'package:PiliPlus/grpc/bilibili/metadata/network.pb.dart' as network;
 import 'package:PiliPlus/utils/login_utils.dart';
+import 'package:PiliPlus/utils/storage_pref.dart';
 import 'package:PiliPlus/utils/utils.dart';
+import 'package:fixnum/fixnum.dart';
 
 abstract final class GrpcHeaders {
   static const _build = 2001100;
@@ -42,6 +44,10 @@ abstract final class GrpcHeaders {
         model: _device,
         osver: '15',
         versionName: _versionName,
+        fpLocal: Pref.biliFpLocal,
+        fpRemote: Pref.biliFpLocal,
+        fp: Pref.biliFpLocal,
+        fts: Int64(Pref.biliTicketFts),
       ).writeToBuffer(),
     ),
     'x-bili-network-bin': base64Encode(
