@@ -103,7 +103,7 @@ abstract final class BiliTicket {
       final res = await Request().post<Uint8List>(
         url,
         data: GrpcReq.compressProtobuf(msg.toBytes()),
-        options: const Options(
+        options: Options(
           contentType: 'application/grpc',
           responseType: ResponseType.bytes,
         ),
