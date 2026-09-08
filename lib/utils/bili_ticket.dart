@@ -48,7 +48,7 @@ abstract final class BiliTicket {
       }
     }
     if (now < _retryAfterMs) {
-      return _ticket ?? '';
+      return _ticketMid == mid ? _ticket ?? '' : '';
     }
     return _pending ??= _fetch(mid).whenComplete(() => _pending = null);
   }
@@ -115,7 +115,7 @@ abstract final class BiliTicket {
         if (ticket.isNotEmpty) {
           _ticket = ticket;
           _ticketMid = mid;
-          _expireAtMs = now + ((ttl > 0 ? ttl : 18000) - 600) * 1000;
+          _expireAtMs = now + ((ttl > 1200 ? ttl : 18000) - 600) * 1000;
           Pref.saveBiliTicket(ticket, _expireAtMs, mid);
           return ticket;
         }

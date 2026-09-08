@@ -171,7 +171,6 @@ class AccountManager extends Interceptor {
       'hdslb.com',
       'biliimg.com',
       'site/getCoin',
-      'bilibili.api.ticket',
     ];
     String url = err.requestOptions.uri.toString();
     if (kDebugMode) debugPrint('🌹🌹ApiInterceptor: $url\n$err');
