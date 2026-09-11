@@ -53,11 +53,16 @@ class RetryInterceptor extends Interceptor {
         case DioExceptionType.connectionError:
         case DioExceptionType.connectionTimeout:
         case DioExceptionType.sendTimeout:
+        case DioExceptionType.receiveTimeout:
         case DioExceptionType.unknown:
           if ((err.requestOptions.extra['_rt'] ??= 0) < _count &&
               err.error
                   is! TransportConnectionException // 网络中断, 此时请求可能已经被服务器所接收
-                  ) {
+              &&
+              // 响应超时时请求可能已被服务端处理, 仅幂等 GET 重试(重连会重新解析DNS换边缘节点)
+              (err.type != DioExceptionType.receiveTimeout ||
+                  err.requestOptions.method == 'GET')) {
+
             Future.delayed(
               Duration(
                 milliseconds: ++err.requestOptions.extra['_rt'] * _delay,

@@ -662,6 +662,9 @@ abstract final class Api {
   /// 激活buvid3
   static const activateBuvidApi = '/x/internal/gaia-gateway/ExClimbWuzhi';
 
+  /// 服务端真实 buvid3/4 签发入口 (官方web首访即取)
+  static const fingerSpi = 'https://api.bilibili.com/x/frontend/finger/spi';
+
   /// 我的订阅
   static const userSubFolder = '/x/v3/fav/folder/collected/list';
 

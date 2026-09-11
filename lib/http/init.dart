@@ -41,6 +41,7 @@ class Request {
     dio.interceptors.add(accountManager);
     Accounts.refresh();
     LoginUtils.setWebCookie();
+    unawaited(fetchRealBuvid3());
 
     if (Accounts.main.isLogin) {
       final coin = Pref.userInfoCache?.money;
@@ -50,6 +51,25 @@ class Request {
         GlobalData().coins = coin;
       }
     }
+  }
+
+  /// 向 finger/spi 取服务端签发的真实 buvid3 替换本地伪造值。
+  /// 失败保留伪造值 (fail-open), 不阻塞启动。
+  static Future<void> fetchRealBuvid3() async {
+    try {
+      final res = await Request().get(
+        Api.fingerSpi,
+        options: Options(extra: {'account': const NoAccount()}),
+      );
+      if (res.data case {'code': 0, 'data': {'b_3': final String b3}}) {
+        if (b3.isNotEmpty) {
+          for (final account in Accounts.accountMode.toSet()) {
+            account.cookieJar.upgradeBuvid3(b3);
+            await account.onChange();
+          }
+        }
+      }
+    } catch (_) {}
   }
 
   static Future<void> setCoin() async {

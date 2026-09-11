@@ -203,6 +203,16 @@ extension BiliCookieJar on DefaultCookieJar {
     );
   }
 
+  /// 用服务端签发值替换本地伪造/旧 buvid3
+  void upgradeBuvid3(String value) {
+    if (value.isEmpty) return;
+    (domainCookies['bilibili.com'] ??= {
+      '/': {},
+    })['/']!['buvid3'] = SerializableCookie(
+      Cookie('buvid3', value)..setBiliDomain(),
+    );
+  }
+
   static DefaultCookieJar fromJson(Map json) =>
       DefaultCookieJar(ignoreExpires: true)
         ..domainCookies['bilibili.com'] = {
